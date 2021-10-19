@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- anti-flicker snippet (recommended)  -->
+    <style>.async-hide { opacity: 0 !important} </style>
+    <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+    h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+    (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+    })(window,document.documentElement,'async-hide','dataLayer',4000,
+    {'GTM-P94F2J5':true});</script>
+    <meta charset='utf-8'>
+    <title>Nejjednodušší Cookie Consent</title>
+    <link rel='stylesheet' type='text/css' href='style.css' />
+    <link rel='stylesheet' type='text/css' href='cookieconsent.min.css' />
+    <!-- Google Tag Manager -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function () { window.dataLayer.push(arguments); }
+      // utility: get cookie value by cookie name
+      function getCookie(cookieName) {
+        let namePrefix = cookieName + '=';
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let cookiesArray = decodedCookie.split(';');
+        for(let i = 0; i <cookiesArray.length; i++) {
+          let c = cookiesArray[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(namePrefix) == 0) {
+            return c.substring(namePrefix.length, c.length);
+          }
+        }
+        return '';
+      }
+      // set the same consent for all categories
+      function setConsent(input, action) {
+        var status = (action === 'allow' ? 'granted' : 'denied');
+        console.log('Setting consent to: ' + status);
+        gtag('consent', input, {
+          analytics_storage: status,
+          personalization_storage: status,
+          ad_storage: status,
+          ads_data_redaction: action === 'allow' ? 'true' : 'false'
+        });
+        dataLayer.push({event: 'consentSettingsUpdated'});
+      }
+      // set initial consent
+      setConsent('default', getCookie('cookieconsent_status') || 'deny');
+      // integrate GTM
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-P94F2J5');
+    </script>
+    <!-- End Google Tag Manager -->
+  </head>
+  <body>
+    <h1>Nejjednodušší Cookie Consent</h1>
+    <div id='content'>
+      <p>Tato stránka ukazuje nejjednodušší možné řešení souhlasů s cookies, které je v souladu s novým ZoEK.</p>
+      <p><a href="/goal.html">Goal</a></p>
+    </div>
+    <script src='cookieconsent.min.js' data-cfasync='false'></script>
+    <script>
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': 'rgba(20,20,20,.1)',
+            'text': '#170c0c',
+            'link': '#007bff'
+          },
+          'button': {
+            'background': '#003E80',
+            'text': '#fff'
+          },
+          'highlight': {
+            'background': '#003E80',
+            'text': '#fff'
+          }
+        },
+        'type': 'opt-in',
+        'content': {
+          'message': 'Chtěli bychom používat cookies. Můžem?',
+          'deny': 'Nemůžete',
+          'allow': 'Ale tak jo',
+          'link': 'Cože?',
+          'policy': 'Upravit cookies',
+          'href': '/privacy.html'
+        },
+        'elements': {
+          'link': '<a aria-label="learn more about cookies" tabindex="0" class="cc-link" href=""></a>'
+        },
+        onStatusChange: function(status, chosenBefore) {
+          console.log('Status changed to: ' + status);
+          setConsent('update', status);
+          // delete cookies
+          if (status === 'deny') {
+            console.log('Deleting First-Party Cookies...');
+            document.cookie = "_gid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.demogram-local.cz; path=/;";
+            document.cookie = "_ga=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.demogram-local.cz; path=/;";
+            document.cookie = "_gat_UA-210299793-1=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.demogram-local.cz; path=/;";
+            document.cookie = "_gcl_au=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.demogram-local.cz; path=/;";
+            document.cookie = "_gaexp=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.demogram-local.cz; path=/;";
+            document.cookie = "_dc_gtm_UA-210299793-1=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.demogram-local.cz; path=/;";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+
